@@ -73,7 +73,6 @@ flutter:
   uses-material-design: true
   assets:
     - assets/fortheneedlogo.png
-    - assets/jsonKeys/fluttermesa-e584cce186d4.json
 
   # To add assets to your application, add an assets section, like this:
   # assets:

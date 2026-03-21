@@ -93,3 +93,11 @@ app.*.symbols
 #Intellij
 .idea/
 .metadata
+
+# Sensitive credentials and keys
+assets/jsonKeys/
+*.json
+!pubspec.yaml
+.env
+.env.local
+

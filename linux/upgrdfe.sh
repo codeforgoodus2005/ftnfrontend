@@ -1,6 +1,6 @@
 cd ../lib
 flutter channel beta
-flutter upgrade
+flutter upgrade --force
 flutter pub get
 flutter build web
 flutter pub outdated

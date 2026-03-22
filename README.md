@@ -98,6 +98,7 @@ FTN Frontend is a cross-platform application that enables volunteers and adminis
    
 2. **Configure Environment Variables**
 3.    # For development
+   flutter upgrade //upgrade flutter sdk and dart 
    flutter run
 
    # For specific platform

@@ -8,7 +8,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'AdminHomePage.dart';
 import 'env.dart';
 import 'ui/app_button_styles.dart';
+import 'package:flutter/gestures.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
+}
 
 void main() async {
   // await dotenv.load();
@@ -21,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: MyCustomScrollBehavior(),
       home: MyHomePage(),
     );
   }

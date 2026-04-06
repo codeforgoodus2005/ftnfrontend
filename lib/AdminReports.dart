@@ -18,6 +18,7 @@ class _AdminReportsState extends State<AdminReports> {
   List<Map<String, dynamic>> filteredData = [];
 
   String? _lastPressedButton;
+  bool _isDataFetched = false;
   final TextEditingController _nameFilterController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -26,10 +27,10 @@ class _AdminReportsState extends State<AdminReports> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFcddcd0),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Admin Reports'),
-        backgroundColor: const Color(0xFFcddcd0),
+        title: const Text('Reports'),
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: Padding(
@@ -43,7 +44,7 @@ class _AdminReportsState extends State<AdminReports> {
                   _fetchVolunteerTrackedHoursData();
                   _lastPressedButton = 'volunteerTrackedHours';
                 }),
-                _buildReportButton('Get All Volunteers', () {
+                _buildReportButton('Get Arrow attendance details', () {
                   _fetchVolunteerData();
                   _lastPressedButton = 'allVolunteers';
                 }),
@@ -129,6 +130,7 @@ class _AdminReportsState extends State<AdminReports> {
   }
 
   Widget _buildDataTable() {
+    if (!_isDataFetched) return const SizedBox.shrink();
     if (filteredData.isEmpty) return const Text("No Data Available");
 
     return DataTable(
@@ -145,13 +147,27 @@ class _AdminReportsState extends State<AdminReports> {
             ]
           : _lastPressedButton == 'allVolunteers'
               ? const [
-                  DataColumn(label: Text('Volunteer ID')),
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Email')),
-                  DataColumn(label: Text('Area of Interest')),
-                  DataColumn(label: Text('Hours Logged')),
-                  DataColumn(label: Text('Events Count')),
-                  DataColumn(label: Text('Donor Status')),
+                  DataColumn(label: Text('Account ID')),
+                  DataColumn(label: Text('Full Name')),
+                  DataColumn(label: Text('Totals 2021')),
+                  DataColumn(label: Text('Totals 2022')),
+                  DataColumn(label: Text('Totals 2023')),
+                  DataColumn(label: Text('Totals 2024')),
+                  DataColumn(label: Text('Totals 2025')),
+                  DataColumn(label: Text('Legacy Event Count')),
+                  DataColumn(label: Text('Award Level')),
+                  DataColumn(label: Text('Program Status 2023')),
+                  DataColumn(label: Text('# last 3 events 2023')),
+                  DataColumn(label: Text('# last 6 2023')),
+                  DataColumn(label: Text('5 In a Row 2023')),
+                  DataColumn(label: Text('Program Status 2024')),
+                  DataColumn(label: Text('# last 3 events 2024')),
+                  DataColumn(label: Text('# last 6 2024')),
+                  DataColumn(label: Text('5 In a Row 2024')),
+                  DataColumn(label: Text('Program Status 2025')),
+                  DataColumn(label: Text('# last 3 events 2025')),
+                  DataColumn(label: Text('# last 6 2025')),
+                  DataColumn(label: Text('5 In a Row 2025')),
                 ]
               : const [
                   DataColumn(label: Text('Youth ID')),
@@ -162,7 +178,7 @@ class _AdminReportsState extends State<AdminReports> {
                   DataColumn(label: Text('Events Count')),
                   DataColumn(label: Text('First Signup Date')),
                 ],
-      rows: filteredData.map((item) {
+      rows: filteredData.skip(1).map((item) {
         List<String> interests = item['Interests']?.split(',') ?? [];
         String firstInterest = interests.isNotEmpty ? interests[0] : 'N/A';
         return DataRow(
@@ -180,17 +196,27 @@ class _AdminReportsState extends State<AdminReports> {
                   ]
                 : _lastPressedButton == 'allVolunteers'
                     ? [
-                        DataCell(
-                            Text(item['VolunteerID']?.toString() ?? 'N/A')),
-                        DataCell(Text(item['VolunteerName'] ?? 'N/A')),
-                        DataCell(Text(item['Email'] ?? 'N/A')),
-                        DataCell(Text(item['AreaOfInterest'] ?? 'N/A')),
-                        DataCell(
-                            Text(item['HoursLogged']?.toString() ?? 'N/A')),
-                        DataCell(Text(
-                            item['ParticipatedEventsCount']?.toString() ??
-                                'N/A')),
-                        DataCell(Text(item['DonorStatus'] == 1 ? 'Yes' : 'No')),
+                        DataCell(Text(item['Account ID']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Full Name (F)']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2021']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2022']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2023']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2024']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2025']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Legacy Event Count']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Award Level']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Program Status 2023']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 3 events 2023']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 6 2023']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['5 In a Row 2023']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Program Status 2024']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 3 events 2024']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 6 2024']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['5 In a Row 2024']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Program Status 2025']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 3 events 2025']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 6 2025']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['5 In a Row 2025']?.toString() ?? 'N/A')),
                       ]
                     : [
                         DataCell(Text(item['YouthID']?.toString() ?? 'N/A')),
@@ -343,7 +369,7 @@ class _AdminReportsState extends State<AdminReports> {
           adminPrefs.getString('admin_sessionToken') ?? '';
       const String apiBaseUrl = Env.apiBaseUrl;
       final response = await http.post(
-        Uri.parse('$apiBaseUrl/reports/allvolunteer'),
+        Uri.parse('$apiBaseUrl/reports/ftnreport'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $adminSessionToken',
@@ -354,9 +380,10 @@ class _AdminReportsState extends State<AdminReports> {
         setState(() {
           volunteerData =
               List<Map<String, dynamic>>.from(json.decode(response.body));
+
+          
           filteredData = volunteerData;
-          participantData = [];
-          volunteerTrackedHoursData = [];
+          _isDataFetched = true;
         });
       } else {
         _showErrorPopup(
@@ -449,6 +476,3 @@ class _AdminReportsState extends State<AdminReports> {
     );
   }
 }
-
-
-

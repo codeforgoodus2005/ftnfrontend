@@ -21,7 +21,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backgroundColor,
+      //backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Admin Dashboard"),
         backgroundColor: backgroundColor,
@@ -36,7 +37,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             alignment: WrapAlignment.start,
             children: [
               _buildDashboardCard(
-                title: "Get Reports",
+                title: "Arrow Attendance Report",
                 icon: Icons.pie_chart,
                 onTap: () {
                   Navigator.push(

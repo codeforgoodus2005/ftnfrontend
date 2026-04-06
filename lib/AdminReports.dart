@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project/env.dart';
+import 'package:flutter/gestures.dart';
 
 class AdminReports extends StatefulWidget {
   const AdminReports({Key? key}) : super(key: key);
@@ -23,6 +24,16 @@ class _AdminReportsState extends State<AdminReports> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  final ScrollController _verticalScrollController = ScrollController();
+  final ScrollController _horizontalScrollController = ScrollController();
+
+   @override
+  void dispose() {
+    _verticalScrollController.dispose();
+    _horizontalScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,35 +65,36 @@ class _AdminReportsState extends State<AdminReports> {
                 }),
               ],
             ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: _nameFilterController,
-              decoration: const InputDecoration(
-                labelText: 'Filter by Name',
-                prefixIcon: Icon(Icons.search),
-              ),
-              onChanged: (value) {
-                _applyFilter();
-              },
-            ),
-            const SizedBox(height: 20),
-            if (_lastPressedButton != null)
-              ElevatedButton(
-                onPressed: _showEmailDialog,
-                child: Text(
-                  'Email ${_lastPressedButton == 'volunteerTrackedHours' ? 'Volunteer Tracked Hours' : _lastPressedButton == 'allVolunteers' ? 'All Volunteers' : 'All Participants'} Report',
-                ),
-              ),
-            const SizedBox(height: 20),
             Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: _buildDataTable(),
-                ),
-              ),
-            ),
+  child: ScrollConfiguration(
+    behavior: ScrollConfiguration.of(context).copyWith(
+      dragDevices: {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.trackpad,
+      },
+    ),
+    child: Scrollbar(
+      controller: _horizontalScrollController,
+      thumbVisibility: true,
+      trackVisibility: true,
+      notificationPredicate: (notif) => notif.depth == 1, 
+      child: SingleChildScrollView(
+        controller: _verticalScrollController,
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          controller: _horizontalScrollController,
+          scrollDirection: Axis.horizontal,
+          // Add a bit of padding so the horizontal bar doesn't overlap the last row
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16.0), 
+            child: _buildDataTable(),
+          ),
+        ),
+      ),
+    ),
+  ),
+),
           ],
         ),
       ),
@@ -168,6 +180,11 @@ class _AdminReportsState extends State<AdminReports> {
                   DataColumn(label: Text('# last 3 events 2025')),
                   DataColumn(label: Text('# last 6 2025')),
                   DataColumn(label: Text('5 In a Row 2025')),
+                  DataColumn(label: Text('Totals 2026')),
+                  DataColumn(label: Text('Program Status 2026')),
+                  DataColumn(label: Text('# last 3 events 2026')),
+                  DataColumn(label: Text('# last 6 2026')),
+                  DataColumn(label: Text('5 In a Row 2026')),
                 ]
               : const [
                   DataColumn(label: Text('Youth ID')),
@@ -217,6 +234,11 @@ class _AdminReportsState extends State<AdminReports> {
                         DataCell(Text(item['# last 3 events 2025']?.toString() ?? 'N/A')),
                         DataCell(Text(item['# last 6 2025']?.toString() ?? 'N/A')),
                         DataCell(Text(item['5 In a Row 2025']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Totals 2026']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['Program Status 2026']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 3 events 2026']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['# last 6 2026']?.toString() ?? 'N/A')),
+                        DataCell(Text(item['5 In a Row 2026']?.toString() ?? 'N/A')),
                       ]
                     : [
                         DataCell(Text(item['YouthID']?.toString() ?? 'N/A')),

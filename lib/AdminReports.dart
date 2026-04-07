@@ -65,6 +65,25 @@ class _AdminReportsState extends State<AdminReports> {
                 }),
               ],
             ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: _nameFilterController,
+              decoration: const InputDecoration(
+                labelText: 'Filter by Name',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                _applyFilter();
+              },
+            ),
+             const SizedBox(height: 20),
+            if (_lastPressedButton != null)
+              ElevatedButton(
+                onPressed: _showEmailDialog,
+                child: Text(
+                  'Email ${_lastPressedButton == 'volunteerTrackedHours' ? 'Volunteer Tracked Hours' : _lastPressedButton == 'allVolunteers' ? 'All Volunteers' : 'All Participants'} Report',
+                ),
+              ),
             Expanded(
   child: ScrollConfiguration(
     behavior: ScrollConfiguration.of(context).copyWith(
